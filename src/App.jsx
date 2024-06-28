@@ -4,6 +4,7 @@ import Button from "./components/Button";
 function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [copy, setCopy] = useState(false);
 
   const encrypt = () => {
     const letters = input.toLowerCase().split("");
@@ -32,6 +33,7 @@ function App() {
           break;
       }
     });
+    setCopy(false);
 
     setOutput(sentence);
   };
@@ -44,18 +46,22 @@ function App() {
       textoCriptografado = textoCriptografado.replace(/imes/g, "i");
       textoCriptografado = textoCriptografado.replace(/enter/g, "e");
       textoCriptografado = textoCriptografado.replace(/ai/g, "a");
+
+      setCopy(false);
       return textoCriptografado;
     };
 
     setOutput(descriptografar(input.toLowerCase()));
   };
 
-  // As "chaves" de criptografia que utilizaremos são:
-  // A letra "a" é convertida para "ai"
-  // A letra "e" é convertida para "enter"
-  // A letra "i" é convertida para "imes"
-  // A letra "o" é convertida para "ober"
-  // A letra "u" é convertida para "ufat"
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(output);
+      setCopy(true);
+    } catch (err) {
+      console.log("Falha ao copiar o texto", err);
+    }
+  };
 
   return (
     <>
@@ -112,9 +118,9 @@ function App() {
               style={
                 "flex justify-center itens-center bg-zinc-200 text-blue-900 p-3 mx-6 border-blue-900 border font-extrabold rounded-xl"
               }
-              onClick={console.log("clicou COPIAR")}
+              onClick={copyToClipboard}
             >
-              Copiar
+              {copy ? "Copiado" : "Copiar"}
             </Button>
           </section>
         )}
