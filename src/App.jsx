@@ -3,9 +3,59 @@ import Button from "./components/Button";
 
 function App() {
   const [input, setInput] = useState("");
-  const [output, setOutpu] = useState("");
+  const [output, setOutput] = useState("");
 
-  console.log(input);
+  const encrypt = () => {
+    const letters = input.toLowerCase().split("");
+    let sentence = "";
+
+    letters.map((l) => {
+      switch (l) {
+        case "a":
+          sentence += "ai";
+          break;
+        case "e":
+          sentence += "enter";
+          break;
+        case "i":
+          sentence += "imes";
+          break;
+        case "o":
+          sentence += "ober";
+          break;
+        case "u":
+          sentence += "ufat";
+          break;
+
+        default:
+          sentence += l;
+          break;
+      }
+    });
+
+    setOutput(sentence);
+  };
+
+  const decrypt = () => {
+    const descriptografar = (textoCriptografado) => {
+      // Substituições na ordem inversa da criptografia
+      textoCriptografado = textoCriptografado.replace(/ufat/g, "u");
+      textoCriptografado = textoCriptografado.replace(/ober/g, "o");
+      textoCriptografado = textoCriptografado.replace(/imes/g, "i");
+      textoCriptografado = textoCriptografado.replace(/enter/g, "e");
+      textoCriptografado = textoCriptografado.replace(/ai/g, "a");
+      return textoCriptografado;
+    };
+
+    setOutput(descriptografar(input.toLowerCase()));
+  };
+
+  // As "chaves" de criptografia que utilizaremos são:
+  // A letra "a" é convertida para "ai"
+  // A letra "e" é convertida para "enter"
+  // A letra "i" é convertida para "imes"
+  // A letra "o" é convertida para "ober"
+  // A letra "u" é convertida para "ufat"
 
   return (
     <>
@@ -23,14 +73,14 @@ function App() {
         </section>
         <section className="flex flex-col justify-start items-start">
           <p className="font-bold underline ">
-            Apenas letras Minusculas e sem acento
+            Apenas letras minúsculas e sem acento.
           </p>
           <div className="flex flex-col gap-2 p-2 w-full">
             <Button
               style={
                 "flex justify-center itens-center bg-blue-900 text-zinc-200 border-zinc-200 border font-extrabold p-3 mx-3 rounded-xl "
               }
-              onClick={console.log("clicou CRIPT")}
+              onClick={encrypt}
             >
               Criptografar
             </Button>
@@ -39,7 +89,7 @@ function App() {
               style={
                 "flex justify-center itens-center bg-zinc-200 text-blue-900 border-blue-900 border font-extrabold p-3 mx-3 rounded-xl"
               }
-              onClick={console.log("clicou DESC")}
+              onClick={decrypt}
             >
               Descriptografar
             </Button>
@@ -56,8 +106,8 @@ function App() {
             </p>
           </div>
         ) : (
-          <section className="w-full flex flex-col gap-3">
-            <p>{output}</p>
+          <section className="w-full flex flex-col bg-white p-6 gap-3 rounded-xl">
+            <p className="text-xl font-bold text-wrap text-center">{output}</p>
             <Button
               style={
                 "flex justify-center itens-center bg-zinc-200 text-blue-900 p-3 mx-6 border-blue-900 border font-extrabold rounded-xl"
